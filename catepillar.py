@@ -32,16 +32,39 @@ score_turtle.hideturtle()
 score_turtle.speed(0)
 
 def outside_window():
-    pass
+    left_wall = -t.window_width() / 2
+    right_wall = t.window_width() / 2
+    top_wall = t.window_height() / 2
+    bottom_wall = -t.window_height() / 2
+    (x, y) = caterpillar.pos()
+    outside = \
+    x < left_wall or \
+    x > right_wall or \
+    y < bottom_wall or \
+    y > top_wall
+    return outside
 
 def game_over():
-    pass
+    caterpillar.color('light blue')
+    leaf.color('light blue')
+    t.penup()
+    t.hideturtle()
+    t.write('GAME OVER!', align='center', font=('Arial', 30, 'normal'))
 
 def display_score(current_score):
-    pass
+    score_turtle.clear()
+    score_turtle.penup()
+    x = (t.window_width() / 2) - 50
+    y = (t.window_height() / 2) - 50
+    score_turtle.setpos(x, y)
+    score_turtle.write(str(current_score), align='right', \
+    font=('Arial', 40, 'bold'))
 
 def place_leaf():
-    pass
+    leaf.ht()
+    leaf.setx(random.randint(-200, 200))
+    leaf.sety(random.randint(-200, 200))
+    leaf.st()
 
 #beginning condisions for the beginning of the game
 def start_game():
@@ -60,18 +83,18 @@ def start_game():
     display_score(score)
     place_leaf()
 
-while True:
-    caterpillar.forward(caterpillar_speed)
-    if caterpillar.distance(leaf) < 20:
-        place_leaf()
-        caterpillar_length = caterpillar_length + 1
-        caterpillar.shapesize(1, caterpillar_length, 1)
-        caterpillar_speed = caterpillar_speed + 1
-        score = score + 10
-        display_score(score)
-    if outside_window():
-        game_over()
-        break
+    while True:
+        caterpillar.forward(caterpillar_speed)
+        if caterpillar.distance(leaf) < 20:
+            place_leaf()
+            caterpillar_length = caterpillar_length + 1
+            caterpillar.shapesize(1, caterpillar_length, 1)
+            caterpillar_speed = caterpillar_speed + 1
+            score = score + 10
+            display_score(score)
+            if outside_window():
+                game_over()
+                break
 
 t.onkey(start_game, 'space')
 t.listen()
