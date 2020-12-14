@@ -37,10 +37,7 @@ def outside_window():
     top_wall = t.window_height() / 2
     bottom_wall = -t.window_height() / 2
     (x, y) = caterpillar.pos()
-    outside = \
-    x < left_wall or \
-    x > right_wall or \
-    y < bottom_wall or \
+    outside = x < left_wall or x > right_wall or y < bottom_wall or \
     y > top_wall
     return outside
 
@@ -54,11 +51,11 @@ def game_over():
 def display_score(current_score):
     score_turtle.clear()
     score_turtle.penup()
-    x = (t.window_width() / 2) - 50
-    y = (t.window_height() / 2) - 50
+    x = (t.window_width() / 2) - 100
+    y = (t.window_height() / 2) - 100
     score_turtle.setpos(x, y)
     score_turtle.write(str(current_score), align='right', \
-    font=('Arial', 40, 'bold'))
+    font=('Arial', 30, 'bold'))
 
 def place_leaf():
     leaf.ht()
@@ -92,10 +89,30 @@ def start_game():
             caterpillar_speed = caterpillar_speed + 1
             score = score + 10
             display_score(score)
-            if outside_window():
-                game_over()
-                break
+        if outside_window():
+            game_over()
+            break
+
+def move_up():
+    if caterpillar.heading() == 0 or caterpillar.heading() == 180:
+        caterpillar.setheading(90)
+
+def move_down():
+    if caterpillar.heading() == 0 or caterpillar.heading() == 180:
+        caterpillar.setheading(270)
+
+def move_left():
+    if caterpillar.heading() == 90 or caterpillar.heading() == 270:
+        caterpillar.setheading(180)
+
+def move_right():
+    if caterpillar.heading() == 90 or caterpillar.heading() == 270:
+        caterpillar.setheading(0)
 
 t.onkey(start_game, 'space')
+t.onkey(move_up, 'Up')
+t.onkey(move_right, 'Right')
+t.onkey(move_down, 'Down')
+t.onkey(move_left, 'Left')
 t.listen()
 t.mainloop()
